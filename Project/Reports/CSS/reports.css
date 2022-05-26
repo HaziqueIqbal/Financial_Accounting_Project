@@ -1,0 +1,62 @@
+#TB {
+  width: 80%;
+  margin: 40px auto 10px auto;
+}
+#TB_Entry {
+  width: 100%;
+  border-collapse: collapse;
+}
+.b{
+    font-weight: bold;
+}
+
+#balance_sheet{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.balance_table{
+    width: 100%;
+}
+#ledger{
+    width: 70%;
+    /* border: 1px solid black; */
+    margin-left: auto;
+    margin-right: auto;
+}
+.c{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.container{
+    border: 1px solid grey;
+    margin: 0px 2px 0px 2px;
+    margin-top: 20px;
+    text-align: center;
+    width: 18%;
+    display: inline-block;
+}
+
+.text{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.cen{
+    margin-left: auto;
+    margin-right: auto;
+   
+}
+
+.para{
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.cen th{
+    border: none;
+}
+.cen td{
+    border: none;
+    text-align: center;
+}
