@@ -33,10 +33,26 @@ var reports = document.getElementById("reports_final");
 
 var AJ_Entry = document.getElementById("AJ_Entry");
 
-var getTrialBalance = JSON.parse(sessionStorage.getItem("Trial Balance"));
+
 
 var additionalEnteries = [];
 var additionalDescriptions = [];
+
+var all_Enteries = [];
+var getTrialBalance = [];
+
+var getInfo = JSON.parse(sessionStorage.getItem("user"));
+if (getInfo[2022].two != undefined) {
+    if (getInfo[2022].three != undefined) {
+        getTrialBalance = getInfo[2022].three.AdjTB;
+        all_Enteries = getInfo[2022].three.additional;
+        additionalEnteries = getInfo[2022].three.AdjTB;
+    } else {
+        getTrialBalance = getInfo[2022].two.sortTB;
+        additionalEnteries = getInfo[2022].two.sortTB;
+    }
+}
+
 
 eventSumbit.addEventListener("click", function () {
     if (getDebitAmount.value != getCreditAmount.value) {
@@ -56,6 +72,9 @@ eventSumbit.addEventListener("click", function () {
         //for credit side
         AddAccount(getCreditAccount.value, 0, getCreditAmount.value, typeC.value, 2);
         AddDescription(getEntryDescription.value);
+        all_Enteries.push({ "AccountName": getDebitAccount.value, "Debit": getDebitAmount.value, "Credit": 0, "typeOfAccount": typeD.value, "date": "31/December/2022", "v": 0 });
+        all_Enteries.push({ "AccountName": getCreditAccount.value, "Debit": 0, "Credit": getCreditAmount.value, "typeOfAccount": typeC.value, "v": 1 });
+        all_Enteries.push({ "Description": getEntryDescription.value, "v": 2 });
         getDebitAccount.value = "";
         getDebitAmount.value = "";
         typeD.selectedIndex = 0;;
@@ -139,14 +158,15 @@ function AddAccount(account, debit_val, credit_val, type, val) {
 
 }
 
-function saveToFirebase(getUser,New_TB) {
+function saveToFirebase(getUser) {
     const dbRef = ref(db);
     console.log("h")
     get(child(dbRef, `organization/${getUser.Username}`)).then((snapshot) => {
         console.log("true")
         if (snapshot.exists()) {
             set(ref(db, "organization/" + getUser.Username + `/2022/three`), {
-                AdjTrialB: New_TB
+                AdjTB: additionalEnteries,
+                additional: all_Enteries
             }).then(() => {
                 console.log("Added to DB!")
             }).catch((error) => {
@@ -161,26 +181,42 @@ function saveToFirebase(getUser,New_TB) {
     });
 }
 
-var SignOut = document.getElementById("SignOut");
-SignOut.addEventListener("click",function(){
-    window.location.replace("../index.html");
-});
 
 
+// var New_TB = [];
+// reports.addEventListener("click", function () {
+//     // let stored = additionalEnteries;
+//     // New_TB = getTrialBalance.concat(stored);
+//     Array.prototype.push.apply(New_TB,getTrialBalance);
+//     Array.prototype.push.apply(New_TB,additionalEnteries);
+//     if (New_TB.length == 0) {
+//         callAlert("Your adjusted accounts are empty, kindly add something!", "#8B8000");
+//     } else {
+
+//         console.log(New_TB)
+//         let getUser = JSON.parse(sessionStorage.getItem("user"));
+//         saveToFirebase(getUser);
+//         sessionStorage.setItem("Final Trial Balance", JSON.stringify(New_TB));
+//         setTimeout(() => {
+//             callPage();
+//         }, 3000);
+//     }
+// });
 reports.addEventListener("click", function () {
-    if (additionalEnteries.length == 0 && additionalDescriptions.length == 0) {
-        callAlert("Your adjusted accounts are empty, kindly add something!", "#8B8000");
+    if (additionalEnteries.length == 0) {
+        callAlert("Your accounts are empty, kindly add something!", "#8B8000");
     } else {
-        let New_TB;
-        let stored = Object.assign(additionalEnteries);
-        New_TB = getTrialBalance.concat(stored);
         let getUser = JSON.parse(sessionStorage.getItem("user"));
-        saveToFirebase(getUser,New_TB);
-        sessionStorage.setItem("Final Trial Balance", JSON.stringify(New_TB));
+        saveToFirebase(getUser);
         setTimeout(() => {
             callPage();
         }, 3000);
     }
+});
+
+var SignOut = document.getElementById("SignOut");
+SignOut.addEventListener("click", function () {
+    window.location.replace("../../index.html");
 });
 
 function callPage() {

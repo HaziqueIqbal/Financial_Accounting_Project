@@ -1,4 +1,4 @@
-var getItems = JSON.parse(sessionStorage.getItem("Final Trial Balance"));
+var getItems = JSON.parse(sessionStorage.getItem("user"));
 
 var final_trial_balance = [];
 var final_sort_trial_balance = [];
@@ -12,12 +12,12 @@ var all_expense = [];
 var ledger = document.getElementById("ledger");
 
 function generate_T_Accounts() {
-    for (let index = 0; index < getItems.length; index++) {
+    for (let index = 0; index < getItems[2022].three.AdjTB.length; index++) {
         let container = document.createElement("div");
         container.setAttribute("class", "container");
         let p = document.createElement("p");
         p.setAttribute("class", "text");
-        p.innerHTML = getItems[index].AccountName;
+        p.innerHTML = getItems[2022].three.AdjTB[index].AccountName;
         p.style.textTransform = "capitalize";
         let table = document.createElement("table");
         table.setAttribute("class", "cen");
@@ -32,8 +32,8 @@ function generate_T_Accounts() {
         let tr_1 = document.createElement("tr");
         let td_1 = document.createElement("td");
         let td_2 = document.createElement("td");
-        td_1.innerHTML = getItems[index].Debit;
-        td_2.innerHTML = getItems[index].Credit;
+        td_1.innerHTML = getItems[2022].three.AdjTB[index].Debit;
+        td_2.innerHTML = getItems[2022].three.AdjTB[index].Credit;
         tr_1.appendChild(td_1);
         tr_1.appendChild(td_2);
 
@@ -48,15 +48,15 @@ function generate_T_Accounts() {
 }
 
 function calculateTrailBalance(getInfo) {
-    for (let index = 0; index < getInfo.length; index++) {
+    for (let index = 0; index < getItems[2022].three.AdjTB.length; index++) {
         // console.log(getInfo[index]);
-        let debit = getInfo[index].Debit;
-        let credit = getInfo[index].Credit;
+        let debit = getItems[2022].three.AdjTB[index].Debit;
+        let credit = getItems[2022].three.AdjTB[index].Credit;
         let total = debit - credit;
         if (total > 0) {
-            final_trial_balance.push({ "AccountName": getInfo[index].AccountName, "Debit": total, "Credit": 0, "typeOfAccount": getInfo[index].typeOfAccount });
+            final_trial_balance.push({ "AccountName": getItems[2022].three.AdjTB[index].AccountName, "Debit": total, "Credit": 0, "typeOfAccount": getItems[2022].three.AdjTB[index].typeOfAccount });
         } else {
-            final_trial_balance.push({ "AccountName": getInfo[index].AccountName, "Debit": 0, "Credit": Math.abs(total), "typeOfAccount": getInfo[index].typeOfAccount });
+            final_trial_balance.push({ "AccountName": getItems[2022].three.AdjTB[index].AccountName, "Debit": 0, "Credit": Math.abs(total), "typeOfAccount": getItems[2022].three.AdjTB[index].typeOfAccount });
         }
     }
     sortTrialBalance();
@@ -239,7 +239,7 @@ function OwnerEquity() {
     capital.appendChild(tr);
     calculateOE();
 }
-
+var fianl_val = 0
 function calculateOE() {
     let flag = 0;
     let getIndex = 0;
@@ -253,7 +253,7 @@ function calculateOE() {
             break;
         }
     }
-    let fianl_val = 0
+
     if (flag == 1) {
         calculate_O.innerHTML = `Owner Capital = ${total_inc} + ${total_CAP} - ${getItems[getIndex].Debit}`;
         fianl_val = total_CAP + total_inc - getItems[getIndex].Debit;
@@ -297,7 +297,7 @@ function assets() {
 
 var total_LIB = 0;
 
-function liabilities(){
+function liabilities() {
     let lib = document.getElementById("lib");
     for (let index = 0; index < all_liabilities.length; index++) {
         let tr = document.createElement("tr");
@@ -326,7 +326,7 @@ function liabilities(){
     Oe();
 }
 
-function Oe(){
+function Oe() {
     let ooc = document.getElementById("OOC");
     let tr = document.createElement("tr");
     let td = document.createElement("td");
@@ -334,30 +334,45 @@ function Oe(){
     td.innerHTML = "Total";
     td.classList.add("b");
     td.classList.add("bor");
-    td_1.innerHTML = total_CAP;
+    td_1.innerHTML = fianl_val;
     td_1.setAttribute("class", "bor");
     tr.appendChild(td);
     tr.appendChild(td_1);
     ooc.appendChild(tr);
     final_balance_sheet();
 }
+// console.log(final_sort_trial_balance)
 
-function final_balance_sheet(){
+function final_balance_sheet() {
     let calculate_OE1 = document.getElementById("calculate_OE1");
-    calculate_OE1.innerHTML = `${total_ASS} = ${total_LIB} + ${total_CAP}`;
-    let fin = total_LIB + total_CAP;
+    calculate_OE1.innerHTML = `${total_ASS} = ${total_LIB} + ${fianl_val}`;
+    let fin = total_LIB + fianl_val;
     let output_OE1 = document.getElementById("output_OE1");
-    if(total_ASS == fin){
+    if (total_ASS == fin) {
         output_OE1.innerHTML = `${total_ASS} = ${fin} (Balanced)`;
-    }else{
+    } else {
         output_OE1.innerHTML = `${total_ASS} = ${fin} (Not Balanced)`;
-    } 
+    }
 }
 
 var SignOut = document.getElementById("SignOut");
-SignOut.addEventListener("click",function(){
+SignOut.addEventListener("click", function () {
     window.location.replace("../../index.html");
     sessionStorage.clear();
 });
+
+window.onload = function () {
+    document.getElementById("print").addEventListener("click", () => {
+        const cv = this.document.getElementById("pr");
+        var opt = {
+            margin: 1,
+            filename: 'reports.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 }
+        };
+        html2pdf().from(cv).set(opt).save();
+    });
+};
+
 
 generate_T_Accounts();
