@@ -33,19 +33,77 @@
     <div class="main_heading">
         <h1>"Financial Statements"</h1>
     </div>
+    <hr class="hrr">
     <div class="main_heading">
-        <h3>Income Statement</h3>
+        <h2>Income Statement</h2>
     </div>
     <div class="main_heading para">
         <p>Net Income = Revenue - Expense</p>
     </div>
-
-    <div class="revenue">
-        <h3>Revenue:</h3>
-        <table id="rev">
-            
-        </table>
+    <div class="income">
+        <div class="revenue">
+            <h3>Revenue:</h3>
+            <table id="rev">
+            </table>
+        </div>
+        <hr>
+        <div class="expense">
+            <h3>Expense:</h3>
+            <table id="exp">
+            </table>
+        </div>
+        <hr>
+        <div class="income_statement">
+            <p id="calculate_net_income" class="cen inc_p"></p>
+            <p id="output_income" class="cen inc_p"></p>
+        </div>
     </div>
+    <hr class="hrr">
+    <div class="main_heading">
+        <h2>Owner's Capital</h2>
+    </div>
+    <div class="main_heading para">
+        <p>Owner Capital = Net Income + OE - Withdrawal</p>
+    </div>
+    <div class="income">
+        <h3>Capital:</h3>
+
+        <table id="cap">
+        </table>
+        <hr>
+        <p id="calculate_OE" class="cen inc_p"></p>
+        <p id="output_OE" class="inc_p cen"></p>
+    </div>
+    <hr class="hrr">
+    <div class="main_heading">
+        <h2>Balance Sheet</h2>
+    </div>
+    <div class="main_heading para">
+        <p>Asset = Liability + OE</p>
+    </div>
+    <div class="income">
+        <h3>Assets:</h3>
+
+        <table id="aasst">
+        </table>
+        <hr>
+        <p id="calculate_OE" class="cen inc_p"></p>
+        <h3>Liability:</h3>
+        <table id="lib">
+        </table>
+        <hr>
+        <p id="calculate_OE" class="cen inc_p"></p>
+
+        <h3>Owner's Capital:</h3>
+        <table id="OOC">
+        </table>
+        <hr>
+        <p id="calculate_OE1" class="cen inc_p"></p>
+        <p id="output_OE1" class="inc_p cen"></p>
+
+    </div>
+
+
     <script src="JS/final_reports.js"></script>
 </body>
 

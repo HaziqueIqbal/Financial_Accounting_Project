@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounts Ledger</title>
     <link rel="stylesheet" href="CSS/style.css">
-    
+
 </head>
 
 <body>
@@ -17,9 +17,11 @@
     <div class="form_style">
         <form>
             <h2 class="heading">Debit</h2>
-            <input type="text" class="textbox_style" name="Debit Side Entry" id="entryD1" placeholder="Enter Account">
-            <input type="text" class="textbox_style" name="DebitAmount" id="entryD_Amount" placeholder="Enter Amount">
-            <select name="typeOfAccount" class="textbox_style" id="typeD">
+            <input type="text" class="textbox_style d1" name="Debit Side Entry" id="entryD1"
+                placeholder="Enter Account">
+            <input type="text" class="textbox_style d2" name="DebitAmount" id="entryD_Amount"
+                placeholder="Enter Amount">
+            <select name="typeOfAccount" class="textbox_style d3" id="typeD">
                 <option value="0">Choose type of account</option>
                 <option value="asset">Asset</option>
                 <option value="liability">Liability</option>
@@ -58,7 +60,7 @@
                 <th>Debit</th>
                 <th>Credit</th>
             </tr>
-           
+
         </table>
     </div>
     <div class="final_button">
@@ -66,5 +68,6 @@
     </div>
 </body>
 <script src="JS/app.js"></script>
+<script src="JS/getInfo.js"></script>
 
 </html>

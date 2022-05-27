@@ -139,9 +139,219 @@ function generateTrialBalance() {
     } else {
         alert("Debit != Credit");
     }
+    calculateRevenue();
 }
 
+var total_REV = 0
+function calculateRevenue() {
 
+    let rev = document.getElementById("rev");
+    for (let index = 0; index < all_revenue.length; index++) {
+        let tr = document.createElement("tr");
+        let td = document.createElement("td");
+        td.setAttribute("class", "bor");
+        let td_1 = document.createElement("td");
+        td.innerHTML = all_revenue[index].AccountName;
+        td_1.innerHTML = all_revenue[index].Credit;
+        td_1.setAttribute("class", "bor");
+        total_REV += Number(all_revenue[index].Credit);
+        tr.appendChild(td);
+        tr.appendChild(td_1);
+        rev.appendChild(tr);
+    }
+    let tr = document.createElement("tr");
+    let td = document.createElement("td");
+    let td_1 = document.createElement("td");
+    td.innerHTML = "Total";
+    td.classList.add("b");
+    td.classList.add("bor");
+    td_1.innerHTML = total_REV;
+    td_1.setAttribute("class", "bor");
+    tr.appendChild(td);
+    tr.appendChild(td_1);
+    rev.appendChild(tr);
+    calculateExpense();
+}
+var total_EXP = 0
+function calculateExpense() {
+    let rev = document.getElementById("exp");
+    for (let index = 0; index < all_expense.length; index++) {
+        let tr = document.createElement("tr");
+        let td = document.createElement("td");
+        let td_1 = document.createElement("td");
+        td.innerHTML = all_expense[index].AccountName;
+        td.setAttribute("class", "bor");
+        td_1.innerHTML = all_expense[index].Debit;
+        td_1.setAttribute("class", "bor");
+        total_EXP += Number(all_expense[index].Debit);
+        tr.appendChild(td);
+        tr.appendChild(td_1);
+        rev.appendChild(tr);
+    }
+    let tr = document.createElement("tr");
+    let td = document.createElement("td");
+    let td_1 = document.createElement("td");
+    td.innerHTML = "Total";
+    td.classList.add("b");
+    td.classList.add("bor");
+    td_1.innerHTML = total_EXP;
+    td_1.setAttribute("class", "bor");
+    tr.appendChild(td);
+    tr.appendChild(td_1);
+    rev.appendChild(tr);
+    IncomeStatement();
+}
 
+function IncomeStatement() {
+    let calculate_net_income = document.getElementById("calculate_net_income");
+    let output_income = document.getElementById("output_income");
+    calculate_net_income.innerHTML = `Net Income = ${total_REV} - ${total_EXP}`;
+    let net_income = total_REV - total_EXP;
+    output_income.innerHTML = `Net Income = ${net_income} PKR`;
+    OwnerEquity();
+}
+var total_CAP = 0;
+function OwnerEquity() {
+    let capital = document.getElementById("cap");
+    for (let index = 0; index < all_capitals.length; index++) {
+        let tr = document.createElement("tr");
+        let td = document.createElement("td");
+        let td_1 = document.createElement("td");
+        td.innerHTML = all_capitals[index].AccountName;
+        td.setAttribute("class", "bor");
+        td_1.innerHTML = all_capitals[index].Credit;
+        td_1.setAttribute("class", "bor");
+        total_CAP += Number(all_capitals[index].Credit);
+        tr.appendChild(td);
+        tr.appendChild(td_1);
+        capital.appendChild(tr);
+    }
+    let tr = document.createElement("tr");
+    let td = document.createElement("td");
+    let td_1 = document.createElement("td");
+    td.innerHTML = "Total";
+    td.classList.add("b");
+    td.classList.add("bor");
+    td_1.innerHTML = total_CAP;
+    td_1.setAttribute("class", "bor");
+    tr.appendChild(td);
+    tr.appendChild(td_1);
+    capital.appendChild(tr);
+    calculateOE();
+}
+
+function calculateOE() {
+    let flag = 0;
+    let getIndex = 0;
+    let calculate_O = document.getElementById("calculate_OE");
+    let output_OE = document.getElementById("output_OE");
+    let total_inc = total_REV - total_EXP;
+    for (let index = 0; index < getItems.length; index++) {
+        if (getItems[index].AccountName.toLowerCase() == "withdraw") {
+            flag = 1;
+            getIndex = index;
+            break;
+        }
+    }
+    let fianl_val = 0
+    if (flag == 1) {
+        calculate_O.innerHTML = `Owner Capital = ${total_inc} + ${total_CAP} - ${getItems[getIndex].Debit}`;
+        fianl_val = total_CAP + total_inc - getItems[getIndex].Debit;
+    } else {
+        calculate_O.innerHTML = `Owner Capital = ${total_inc} + ${total_CAP} - ${0}`;
+        fianl_val = total_CAP + total_inc - 0;
+    }
+
+    output_OE.innerHTML = `Owner Capital = ${fianl_val}`;
+    assets()
+}
+var total_ASS = 0;
+function assets() {
+    let ass = document.getElementById("aasst");
+    for (let index = 0; index < all_assets.length; index++) {
+        let tr = document.createElement("tr");
+        let td = document.createElement("td");
+        let td_1 = document.createElement("td");
+        td.innerHTML = all_assets[index].AccountName;
+        td.setAttribute("class", "bor");
+        td_1.innerHTML = all_assets[index].Debit;
+        td_1.setAttribute("class", "bor");
+        total_ASS += Number(all_assets[index].Debit);
+        tr.appendChild(td);
+        tr.appendChild(td_1);
+        ass.appendChild(tr);
+    }
+    let tr = document.createElement("tr");
+    let td = document.createElement("td");
+    let td_1 = document.createElement("td");
+    td.innerHTML = "Total";
+    td.classList.add("b");
+    td.classList.add("bor");
+    td_1.innerHTML = total_ASS;
+    td_1.setAttribute("class", "bor");
+    tr.appendChild(td);
+    tr.appendChild(td_1);
+    ass.appendChild(tr);
+    liabilities();
+}
+
+var total_LIB = 0;
+
+function liabilities(){
+    let lib = document.getElementById("lib");
+    for (let index = 0; index < all_liabilities.length; index++) {
+        let tr = document.createElement("tr");
+        let td = document.createElement("td");
+        let td_1 = document.createElement("td");
+        td.innerHTML = all_liabilities[index].AccountName;
+        td.setAttribute("class", "bor");
+        td_1.innerHTML = all_liabilities[index].Credit;
+        td_1.setAttribute("class", "bor");
+        total_LIB += Number(all_liabilities[index].Credit);
+        tr.appendChild(td);
+        tr.appendChild(td_1);
+        lib.appendChild(tr);
+    }
+    let tr = document.createElement("tr");
+    let td = document.createElement("td");
+    let td_1 = document.createElement("td");
+    td.innerHTML = "Total";
+    td.classList.add("b");
+    td.classList.add("bor");
+    td_1.innerHTML = total_LIB;
+    td_1.setAttribute("class", "bor");
+    tr.appendChild(td);
+    tr.appendChild(td_1);
+    lib.appendChild(tr);
+    Oe();
+}
+
+function Oe(){
+    let ooc = document.getElementById("OOC");
+    let tr = document.createElement("tr");
+    let td = document.createElement("td");
+    let td_1 = document.createElement("td");
+    td.innerHTML = "Total";
+    td.classList.add("b");
+    td.classList.add("bor");
+    td_1.innerHTML = total_CAP;
+    td_1.setAttribute("class", "bor");
+    tr.appendChild(td);
+    tr.appendChild(td_1);
+    ooc.appendChild(tr);
+    final_balance_sheet();
+}
+
+function final_balance_sheet(){
+    let calculate_OE1 = document.getElementById("calculate_OE1");
+    calculate_OE1.innerHTML = `${total_ASS} = ${total_LIB} + ${total_CAP}`;
+    let fin = total_LIB + total_CAP;
+    let output_OE1 = document.getElementById("output_OE1");
+    if(total_ASS == fin){
+        output_OE1.innerHTML = `${total_ASS} = ${fin} (Balanced)`;
+    }else{
+        output_OE1.innerHTML = `${total_ASS} = ${fin} (Not Balanced)`;
+    } 
+}
 
 generate_T_Accounts();

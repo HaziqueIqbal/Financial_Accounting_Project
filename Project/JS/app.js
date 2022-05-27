@@ -25,8 +25,10 @@ var x = document.getElementById("co");
 
 var reports = document.getElementById("reports");
 
-
+var counter = 0;
 var T_Accounts = [];
+
+var all_Enteries = [];
 
 eventSumbit.addEventListener("click", function () {
     if (getDebitAmount.value != getCreditAmount.value) {
@@ -46,6 +48,10 @@ eventSumbit.addEventListener("click", function () {
         //for credit side
         AddAccount(getCreditAccount.value, 0, getCreditAmount.value, typeC.value, 2);
         AddDescription(getEntryDescription.value);
+        all_Enteries.push({ "AccountName": getDebitAccount.value, "Debit": getDebitAmount.value, "Credit": 0, "typeOfAccount": typeD.value, "date": current, "v": 0 });
+        all_Enteries.push({ "AccountName": getCreditAccount.value, "Debit": 0, "Credit": getCreditAmount.value, "typeOfAccount": typeC.value, "v": 1 });
+        all_Enteries.push({ "Description": getEntryDescription.value, "counter": counter, "v": 2 });
+        counter += 1;
         getDebitAccount.value = "";
         getDebitAmount.value = "";
         typeD.selectedIndex = 0;;
@@ -153,10 +159,11 @@ function callAlert(msg, value) {
 }
 
 reports.addEventListener("click", function () {
-    if (T_Accounts.length == 0 && T_Accounts_Description.length == 0) {
+    if (T_Accounts.length == 0) {
         callAlert("Your accounts are empty, kindly add something!", "#8B8000");
     } else {
         sessionStorage.setItem("Accounts", JSON.stringify(T_Accounts));
+        sessionStorage.setItem("All Enteries GJ", JSON.stringify(all_Enteries));
         window.location.href = "Reports/reports.html";
     }
 });
