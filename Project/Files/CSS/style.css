@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* styling of text_boxes */
+.form_style {
+  margin: 40px auto 10px auto;
+  width: 70%;
+  height: 100%;
+  border: 1px solid black;
+  text-align: center;
+}
+.main_heading {
+  margin: 30px auto 0px auto;
+  width: 50%;
+  text-align: center;
+}
+.main_heading h1 {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.textbox_style {
+  width: 30%;
+  font-size: 20px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.heading {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  text-transform: uppercase;
+  margin: 20px 0px 10px 0px;
+}
+.mr-button {
+  margin-top: 20px;
+  width: 20%;
+  height: 30px;
+  text-transform: uppercase;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bolder;
+  background: none;
+  font-size: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.mr-button_1 {
+  margin-top: 20px;
+  width: 30%;
+  height: 30px;
+  text-transform: uppercase;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bolder;
+  background: none;
+  font-size: 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.mr-t{
+  margin-bottom: 10px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-transform: uppercase;
+}
+
+#co {
+  color: red;
+}
+
+.final_button{
+  margin-top: 20px;
+  text-align: center;
+}
+.mr {
+  margin-top: 20px;
+  width: 90%;
+}
+
+/* styling of GJ */
+#GJ {
+  width: 80%;
+  margin: 40px auto 10px auto;
+}
+#GJ_Entry {
+  width: 100%;
+  border-collapse: collapse;
+}
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+.cen {
+  text-align: center !important;
+}
