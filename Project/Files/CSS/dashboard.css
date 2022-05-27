@@ -35,21 +35,39 @@ th {
   text-align: left;
   padding: 8px;
 }
-.cen{
-    width: 90%;
-    margin: 0 auto;
-    text-align: center;
+.cen {
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .edit {
-    margin-top: 20px;
-    width: 10%;
-    height: 30px;
-    text-transform: uppercase;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-    font-weight: bolder;
-    background: none;
-    font-size: 20px;
-    margin-bottom: 5px;
-    cursor: pointer;
-  }
+  margin-top: 20px;
+  width: 10%;
+  height: 30px;
+  text-transform: uppercase;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bolder;
+  background: none;
+  font-size: 20px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+.yr{
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  
+}
+#SignOut{
+  background-color: #04AA6D;
+  width: 10%;
+  font-size: 25px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: white;
+  border: none;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+}

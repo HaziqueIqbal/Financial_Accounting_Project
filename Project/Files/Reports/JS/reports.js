@@ -1,10 +1,24 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-app.js";
+import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-database.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyBs34yvugpJjNktqOXqP5h2KhbRsW8oaBY",
+    authDomain: "cap-accounts-handler.firebaseapp.com",
+    databaseURL: "https://cap-accounts-handler-default-rtdb.firebaseio.com",
+    projectId: "cap-accounts-handler",
+    storageBucket: "cap-accounts-handler.appspot.com",
+    messagingSenderId: "498900144284",
+    appId: "1:498900144284:web:6e0a5088e21938deb6dd59"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase();
+
 var getItems = JSON.parse(sessionStorage.getItem("Accounts"));
 
 var trial_balance = [];
 var sort_trial_balance = [];
-// var all_assets = [];
-// var all_liabilities = [];
-// var all_capitals = [];
 
 var TB_Entry = document.getElementById("TB_Entry");
 
@@ -137,75 +151,44 @@ function generateTrialBalance() {
     }
 }
 
-adjustment.addEventListener("click", function () {
-    sessionStorage.setItem("Trial Balance", JSON.stringify(sort_trial_balance));
-    window.location.href = "adjustment.html";
+function saveToFirebase(getUser) {
+    const dbRef = ref(db);
+    get(child(dbRef, `organization/${getUser.Username}`)).then((snapshot) => {
+        console.log("true")
+        if (snapshot.exists()) {
+            set(ref(db, "organization/" + getUser.Username + `/2022/two`), {
+                sortTB: sort_trial_balance
+            }).then(() => {
+                console.log("Added to DB!")
+            }).catch((error) => {
+                callAlert("error" + error, "red");
+            });
+        } else {
+            callAlert("Record not found! try again.", "red");
+            return;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+var SignOut = document.getElementById("SignOut");
+SignOut.addEventListener("click",function(){
+    window.location.replace("../../index.html");
 });
-// var total_asset = 0;
-// var total_lib = 0;
-// var total_capital = 0;
-// function generateBalanceSheet() {
-//     let table_1 = document.getElementById("table_1");
-//     for (let index = 0; index < all_assets.length; index++) {
-//         let tr = document.createElement("tr");
-//         let td = document.createElement("td");
-//         td.style.textTransform = "capitalize";
-//         td.innerHTML = all_assets[index].AccountName;
-//         td.style.border = "none"
-//         let td_1 = document.createElement("td");
-//         td_1.innerHTML = all_assets[index].Debit;
-//         td_1.style.border = "none"
-//         tr.appendChild(td);
-//         tr.appendChild(td_1);
-//         table_1.appendChild(tr);
-//         total_asset += Number(all_assets[index].Debit);
-//     }
-//     let tr = document.createElement("tr");
-//     let td = document.createElement("td");
-//     let td_1 = document.createElement("td");
-//     td.style.textTransform = "capitalize";
-//     td.setAttribute("class", "b");
-//     td.innerHTML = "Total";
-//     td.style.border = "none";
-//     td_1.setAttribute("class", "b");
-//     td_1.innerHTML = total_asset;
-//     td_1.style.border = "none";
-//     tr.appendChild(td);
-//     tr.appendChild(td_1);
-//     table_1.appendChild(tr);
 
 
-//     let table_2 = document.getElementById("table_2");
-//     for (let index = 0; index < all_capitals.length; index++) {
-//         let tr = document.createElement("tr");
-//         let td = document.createElement("td");
-//         td.style.textTransform = "capitalize";
-//         td.innerHTML = all_capitals[index].AccountName;
-//         td.style.border = "none"
-//         let td_1 = document.createElement("td");
-//         td_1.innerHTML = all_capitals[index].Credit;
-//         td_1.style.border = "none"
-//         tr.appendChild(td);
-//         tr.appendChild(td_1);
-//         table_2.appendChild(tr);
-//         total_capital += Number(all_capitals[index].Credit);
-//     }
+adjustment.addEventListener("click", function () {
+    let getUser = JSON.parse(sessionStorage.getItem("user"));
+    saveToFirebase(getUser);
+    sessionStorage.setItem("Trial Balance", JSON.stringify(sort_trial_balance));
+    setTimeout(() => {
+        callPage();
+    }, 3000);
 
-//     let table_3 = document.getElementById("table_3");
-//     for (let index = 0; index < all_liabilities.length; index++) {
-//         let tr = document.createElement("tr");
-//         let td = document.createElement("td");
-//         td.style.textTransform = "capitalize";
-//         td.innerHTML = all_liabilities[index].AccountName;
-//         td.style.border = "none"
-//         let td_1 = document.createElement("td");
-//         td_1.innerHTML = all_liabilities[index].Credit;
-//         td_1.style.border = "none"
-//         tr.appendChild(td);
-//         tr.appendChild(td_1);
-//         table_3.appendChild(tr);
-//         total_capital += Number(all_liabilities[index].Credit);
-//     }    
-// }
+});
 
+function callPage() {
+    window.location.href = "adjustment.html";
+}
 generate_T_Accounts();

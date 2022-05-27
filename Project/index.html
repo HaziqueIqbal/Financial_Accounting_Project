@@ -5,69 +5,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounts Ledger</title>
+    <title>Login</title>
     <link rel="stylesheet" href="CSS/style.css">
-
 </head>
 
 <body>
-    <div class="main_heading">
-        <h1>"Entry in General Journal"</h1>
-    </div>
-    <div class="form_style">
+    <div class="fluid">
         <form>
-            <h2 class="heading">Debit</h2>
-            <input type="text" class="textbox_style d1" name="Debit Side Entry" id="entryD1"
-                placeholder="Enter Account">
-            <input type="text" class="textbox_style d2" name="DebitAmount" id="entryD_Amount"
-                placeholder="Enter Amount">
-            <select name="typeOfAccount" class="textbox_style d3" id="typeD">
-                <option value="0">Choose type of account</option>
-                <option value="asset">Asset</option>
-                <option value="liability">Liability</option>
-                <option value="owner">Owner Capital</option>
-                <option value="revenue">Revenue</option>
-                <option value="expense">Expense</option>
-            </select>
-            <br>
-            <h2 class="heading">Credit</h2>
-            <input type="text" class="textbox_style" name="Credit Side Entry" id="entryC1" placeholder="Enter Account">
-            <input type="text" class="textbox_style" name="CreditAmount" id="entryC_Amount" placeholder="Enter Amount">
-            <select name="typeOfAccount" class="textbox_style" id="typeC">
-                <option value="0">Choose type of account</option>
-                <option value="asset">Asset</option>
-                <option value="liability">Liability</option>
-                <option value="owner">Owner Capital</option>
-                <option value="revenue">Revenue</option>
-                <option value="expense">Expense</option>
-            </select>
-            <br>
-            <input type="text" class="textbox_style mr" name="Description" id="entryDescription"
-                placeholder="Enter Information About Event">
-            <br>
-            <input type="button" class="mr-button" id="entrySubmit" value="Enter">
-        </form>
-        <p class="mr-t" id="co" hidden>hg</p>
-    </div>
-    <div class="main_heading">
-        <h1>"General Journal"</h1>
-    </div>
-    <div id="GJ">
-        <table id="GJ_Entry">
-            <tr>
-                <th>Date</th>
-                <th>Accounts</th>
-                <th>Debit</th>
-                <th>Credit</th>
-            </tr>
+            <div class="container">
+                <h1>Login</h1>
+                <p>Please enter your valid credentials.</p>
+                <hr>
 
-        </table>
+                <label for="userName"><b>Email</b></label>
+                <input type="text" placeholder="Enter username" name="username" id="userName" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+                <hr>
+                <p id="x" hidden></p>
+                <p>By creating an account you agree to our <a href="JavaScript:void(0)">Terms & Privacy</a>.</p>
+
+            </div>
+        </form>
+        <button id="login" class="registerbtn">Login</button>
+
+        <div class="container signin">
+            <p>Are you registered? Create an account <a href="Register.html">Sign up</a>.</p>
+        </div>
     </div>
-    <div class="final_button">
-        <input type="button" class="mr-button cen" id="reports" value="Generate Reports">
-    </div>
+    <script type="module" src="JS/login.js"></script>
 </body>
-<script src="JS/app.js"></script>
-<script src="JS/getInfo.js"></script>
 
 </html>

@@ -1,3 +1,19 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-app.js";
+import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-database.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyBs34yvugpJjNktqOXqP5h2KhbRsW8oaBY",
+    authDomain: "cap-accounts-handler.firebaseapp.com",
+    databaseURL: "https://cap-accounts-handler-default-rtdb.firebaseio.com",
+    projectId: "cap-accounts-handler",
+    storageBucket: "cap-accounts-handler.appspot.com",
+    messagingSenderId: "498900144284",
+    appId: "1:498900144284:web:6e0a5088e21938deb6dd59"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase();
 var eventSumbit = document.getElementById("entrySubmit");
 
 var getDebitAccount = document.getElementById("entryD1");
@@ -123,17 +139,53 @@ function AddAccount(account, debit_val, credit_val, type, val) {
 
 }
 
+function saveToFirebase(getUser,New_TB) {
+    const dbRef = ref(db);
+    console.log("h")
+    get(child(dbRef, `organization/${getUser.Username}`)).then((snapshot) => {
+        console.log("true")
+        if (snapshot.exists()) {
+            set(ref(db, "organization/" + getUser.Username + `/2022/three`), {
+                AdjTrialB: New_TB
+            }).then(() => {
+                console.log("Added to DB!")
+            }).catch((error) => {
+                callAlert("error" + error, "red");
+            });
+        } else {
+            callAlert("Record not found! try again.", "red");
+            return;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+var SignOut = document.getElementById("SignOut");
+SignOut.addEventListener("click",function(){
+    window.location.replace("../index.html");
+});
+
+
 reports.addEventListener("click", function () {
     if (additionalEnteries.length == 0 && additionalDescriptions.length == 0) {
         callAlert("Your adjusted accounts are empty, kindly add something!", "#8B8000");
-    }else{
+    } else {
         let New_TB;
         let stored = Object.assign(additionalEnteries);
         New_TB = getTrialBalance.concat(stored);
-        sessionStorage.setItem("Final Trial Balance",JSON.stringify(New_TB));
-        window.location.href = "final_reports.html";
+        let getUser = JSON.parse(sessionStorage.getItem("user"));
+        saveToFirebase(getUser,New_TB);
+        sessionStorage.setItem("Final Trial Balance", JSON.stringify(New_TB));
+        setTimeout(() => {
+            callPage();
+        }, 3000);
     }
 });
+
+function callPage() {
+    window.location.href = "final_reports.html";
+}
 
 function AddDescription(getDesc) {
     additionalDescriptions.push({ "desc": getDesc });

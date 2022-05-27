@@ -78,3 +78,16 @@
     width: 65%;
     margin: 10px auto 0px auto;
 }
+
+#SignOut{
+  background-color: #04AA6D;
+  width: 10%;
+  font-size: 25px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: white;
+  border: none;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  cursor: pointer;
+}

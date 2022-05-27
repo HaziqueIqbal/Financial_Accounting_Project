@@ -47,6 +47,12 @@ var T_Accounts = [];
 
 var all_Enteries = [];
 
+var getInfo = JSON.parse(sessionStorage.getItem("user"));
+if (getInfo[2022] != undefined) {
+    T_Accounts = getInfo[2022].one.TAccounts;
+    all_Enteries = getInfo[2022].one.AllEnteries;
+}
+
 eventSumbit.addEventListener("click", function () {
     if (getDebitAmount.value != getCreditAmount.value) {
         callAlert("Debit & Credit Amount Must be same!", "red");
@@ -179,11 +185,10 @@ function callAlert(msg, value) {
 
 function saveToFirebase(getUser) {
     const dbRef = ref(db);
-    // alert(getUser.Username)
     get(child(dbRef, `organization/${getUser.Username}`)).then((snapshot) => {
         console.log("true")
         if (snapshot.exists()) {
-            set(ref(db, "organization/" + getUser.Username + `/2022`), {
+            set(ref(db, "organization/" + getUser.Username + `/2022/one`), {
                 TAccounts: T_Accounts,
                 AllEnteries: all_Enteries
             }).then(() => {
@@ -200,19 +205,28 @@ function saveToFirebase(getUser) {
     });
 }
 
+
 reports.addEventListener("click", function () {
-    let getAccount = JSON.parse(sessionStorage.getItem("Accounts"));
-    console.log(getAccount == null)
-    if (T_Accounts.length == 0 && getAccount == null) {
+    if (T_Accounts.length == 0) {
         callAlert("Your accounts are empty, kindly add something!", "#8B8000");
     } else {
-        sessionStorage.setItem("Accounts", JSON.stringify(T_Accounts));
-        sessionStorage.setItem("All Enteries GJ", JSON.stringify(all_Enteries));
         let getUser = JSON.parse(sessionStorage.getItem("user"));
         saveToFirebase(getUser);
-        window.location.href = "Reports/reports.html";
+        sessionStorage.setItem("Accounts", JSON.stringify(T_Accounts));
+        sessionStorage.setItem("All Enteries GJ", JSON.stringify(all_Enteries));
+        setTimeout(() => {
+            callPage();
+        }, 3000);
     }
 });
 
+var SignOut = document.getElementById("SignOut");
+SignOut.addEventListener("click",function(){
+    window.location.replace("../index.html");
+});
+
+function callPage() {
+    window.location.href = "Reports/reports.html";
+}
 
 

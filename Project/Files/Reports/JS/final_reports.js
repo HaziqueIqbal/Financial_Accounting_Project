@@ -354,4 +354,10 @@ function final_balance_sheet(){
     } 
 }
 
+var SignOut = document.getElementById("SignOut");
+SignOut.addEventListener("click",function(){
+    window.location.replace("../../index.html");
+    sessionStorage.clear();
+});
+
 generate_T_Accounts();
