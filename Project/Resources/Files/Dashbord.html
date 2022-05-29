@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="CSS/dashboard.css">
+</head>
+
+<body>
+    <div class="main_heading">
+        <h1 id="getTitle"></h1>
+    </div>
+    <div class="content">
+        <p>UserName: <span id="un"></span></p>
+        <p>Email: <span id="email"></span></p>
+        <p>Address: <span id="addr"></span></p>
+        <p>Financial Year End: <span id="fye"></span></p>
+    </div>
+    <div class="cen">
+        <button id="addYear" class="edit">Add Year</button>
+    </div>
+    <div class="tab">
+        <div id="GJ">
+            <table id="GJ_Entry">
+                <tr>
+                    <th>Financial Year</th>
+                    <th>Status</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <button id="SignOut">SignOut</button>
+    <script type="module" src="JS/dashboard.js"></script>
+</body>
+
+</html>
