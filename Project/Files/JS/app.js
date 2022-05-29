@@ -47,47 +47,111 @@ var T_Accounts = [];
 
 var all_Enteries = [];
 
-var getInfo = JSON.parse(sessionStorage.getItem("user"));
-if (getInfo[2022] != undefined) {
-    T_Accounts = getInfo[2022].one.TAccounts;
-    all_Enteries = getInfo[2022].one.AllEnteries;
+
+
+var gets = JSON.parse(sessionStorage.getItem("user"));
+var getInfoDB = []
+var getInfoDB2 = []
+function getFromFireBase() {
+    const dbRef = ref(db);
+    get(child(dbRef, `organization/${gets.Username}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            snapshot.forEach(c => {
+                if (c.val().one != undefined) {
+                    getInfoDB.push(c.val().one.TAccounts)
+                    getInfoDB2.push(c.val().one.AllEnteries);
+                }
+            })
+        } else {
+            console.log("Not Found!");
+            return;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
 }
 
-eventSumbit.addEventListener("click", function () {
-    if (getDebitAmount.value != getCreditAmount.value) {
-        callAlert("Debit & Credit Amount Must be same!", "red");
-    }
-    else if (getCreditAccount.value == "" || getCreditAmount.value == "" || getDebitAccount.value == "" || getDebitAmount.value == "") {
-        callAlert("Please fill all Input fields!", "red");
-    }
-    else if (typeD.value == 0 || typeC.value == 0) {
-        callAlert("Please select account!", "red")
-    } else if (getEntryDescription.value == "") {
-        callAlert("Please enter description", "red");
-    }
-    else {
-        //for debit side
-        AddAccount(getDebitAccount.value, getDebitAmount.value, 0, typeD.value, 1);
-        //for credit side
-        AddAccount(getCreditAccount.value, 0, getCreditAmount.value, typeC.value, 2);
-        AddDescription(getEntryDescription.value);
-        all_Enteries.push({ "AccountName": getDebitAccount.value, "Debit": getDebitAmount.value, "Credit": 0, "typeOfAccount": typeD.value, "date": current, "v": 0 });
-        all_Enteries.push({ "AccountName": getCreditAccount.value, "Debit": 0, "Credit": getCreditAmount.value, "typeOfAccount": typeC.value, "v": 1 });
-        all_Enteries.push({ "Description": getEntryDescription.value, "counter": counter, "v": 2 });
-        counter += 1;
-        getDebitAccount.value = "";
-        getDebitAmount.value = "";
-        typeD.selectedIndex = 0;
-        getCreditAccount.value = "";
-        getCreditAmount.value = "";
-        typeC.selectedIndex = 0;
-        getEntryDescription.value = "";
-        callAlert("Added Successfully!", "green");
-        console.log(T_Accounts)
-    }
+if (gets != null) {
+
+    getFromFireBase()
+
+    setTimeout(() => {
+        T_Accounts = getInfoDB[0];
+        all_Enteries = getInfoDB2[0];
+    }, 2000)
 
 
-});
+
+    eventSumbit.addEventListener("click", function () {
+        if (getDebitAmount.value != getCreditAmount.value) {
+            callAlert("Debit & Credit Amount Must be same!", "red");
+        }
+        else if (getCreditAccount.value == "" || getCreditAmount.value == "" || getDebitAccount.value == "" || getDebitAmount.value == "") {
+            callAlert("Please fill all Input fields!", "red");
+        }
+        else if (typeD.value == 0 || typeC.value == 0) {
+            callAlert("Please select account!", "red")
+        } else if (getEntryDescription.value == "") {
+            callAlert("Please enter description", "red");
+        }
+        else {
+            //for debit side
+            AddAccount(getDebitAccount.value, getDebitAmount.value, 0, typeD.value, 1);
+            //for credit side
+            AddAccount(getCreditAccount.value, 0, getCreditAmount.value, typeC.value, 2);
+            AddDescription(getEntryDescription.value);
+            all_Enteries.push({ "AccountName": getDebitAccount.value, "Debit": getDebitAmount.value, "Credit": 0, "typeOfAccount": typeD.value, "date": current, "v": 0 });
+            all_Enteries.push({ "AccountName": getCreditAccount.value, "Debit": 0, "Credit": getCreditAmount.value, "typeOfAccount": typeC.value, "v": 1 });
+            all_Enteries.push({ "Description": getEntryDescription.value, "counter": counter, "v": 2 });
+            counter += 1;
+            getDebitAccount.value = "";
+            getDebitAmount.value = "";
+            typeD.selectedIndex = 0;
+            getCreditAccount.value = "";
+            getCreditAmount.value = "";
+            typeC.selectedIndex = 0;
+            getEntryDescription.value = "";
+            callAlert("Added Successfully!", "green");
+            console.log(T_Accounts)
+        }
+
+
+    });
+
+
+    reports.addEventListener("click", function () {
+        if (T_Accounts.length == 0) {
+            callAlert("Your accounts are empty, kindly add something!", "#8B8000");
+        } else {
+            let getUser = JSON.parse(sessionStorage.getItem("user"));
+            saveToFirebase(getUser);
+            // sessionStorage.setItem("Accounts", JSON.stringify(T_Accounts));
+            // sessionStorage.setItem("All Enteries GJ", JSON.stringify(all_Enteries));
+            setTimeout(() => {
+                callPage();
+            }, 3000);
+        }
+    });
+
+    var SignOut = document.getElementById("SignOut");
+    SignOut.addEventListener("click", function () {
+        window.location.replace("../index.html");
+    });
+
+} else {
+    window.location.replace("Invalid/Invalid.html");
+}
+
+
+function callAlert(msg, value) {
+    x.innerHTML = msg;
+    x.style.display = "block"
+    x.style.color = value;
+    setTimeout(() => {
+        x.style.display = "none"
+    }, 5000)
+}
+
 
 function AddAccount(account, debit_val, credit_val, type, val) {
     let accountName = account;
@@ -163,6 +227,7 @@ function AddAccount(account, debit_val, credit_val, type, val) {
 
 }
 
+
 function AddDescription(getDesc) {
     let tr = document.createElement("tr");
     let desc = document.createElement("td");
@@ -172,15 +237,8 @@ function AddDescription(getDesc) {
     GJ_Entry.append(tr);
 }
 
-
-
-function callAlert(msg, value) {
-    x.innerHTML = msg;
-    x.style.display = "block"
-    x.style.color = value;
-    setTimeout(() => {
-        x.style.display = "none"
-    }, 5000)
+function callPage() {
+    window.location.href = "Reports/reports.html";
 }
 
 function saveToFirebase(getUser) {
@@ -204,29 +262,3 @@ function saveToFirebase(getUser) {
         console.error(error);
     });
 }
-
-
-reports.addEventListener("click", function () {
-    if (T_Accounts.length == 0) {
-        callAlert("Your accounts are empty, kindly add something!", "#8B8000");
-    } else {
-        let getUser = JSON.parse(sessionStorage.getItem("user"));
-        saveToFirebase(getUser);
-        sessionStorage.setItem("Accounts", JSON.stringify(T_Accounts));
-        sessionStorage.setItem("All Enteries GJ", JSON.stringify(all_Enteries));
-        setTimeout(() => {
-            callPage();
-        }, 3000);
-    }
-});
-
-var SignOut = document.getElementById("SignOut");
-SignOut.addEventListener("click",function(){
-    window.location.replace("../index.html");
-});
-
-function callPage() {
-    window.location.href = "Reports/reports.html";
-}
-
-

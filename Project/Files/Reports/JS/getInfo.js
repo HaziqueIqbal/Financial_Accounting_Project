@@ -1,69 +1,114 @@
-var getInfo = JSON.parse(sessionStorage.getItem("user"));
-// console.log(getInfo[2022].three.additional)
+// var getInfo = JSON.parse(sessionStorage.getItem("user"));
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-app.js";
+import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-database.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyBs34yvugpJjNktqOXqP5h2KhbRsW8oaBY",
+    authDomain: "cap-accounts-handler.firebaseapp.com",
+    databaseURL: "https://cap-accounts-handler-default-rtdb.firebaseio.com",
+    projectId: "cap-accounts-handler",
+    storageBucket: "cap-accounts-handler.appspot.com",
+    messagingSenderId: "498900144284",
+    appId: "1:498900144284:web:6e0a5088e21938deb6dd59"
+};
 
-var GJ_Entry = document.getElementById("AJ_Entry");
-var j = 0;
-if (getInfo[2022].three != undefined) {
-    if (getInfo[2022].three.additional != undefined) {
-        for (let index = 0; index < getInfo[2022].three.additional.length; index++) {
-            // console.log(`j start = ${j}`)
-            for (j = index; j < index + getInfo[2022].three.additional.length; j++) {
-                if (getInfo[2022].three.additional[j].v == 0) {
-                    console.log(getInfo[2022].three.additional[j]);
-                    let tr = document.createElement("tr");
-                    let date = document.createElement("td");
-                    let accName = document.createElement("td");
-                    let deb = document.createElement("td");
-                    let cre = document.createElement("td");
-                    date.innerHTML = getInfo[2022].three.additional[j].date;
-                    date.setAttribute("rowspan", "3");
-                    accName.innerHTML = getInfo[2022].three.additional[j].AccountName;
-                    if (getInfo[2022].three.additional[j].Debit == 0) {
-                        deb.innerHTML = "";
-                        cre.innerHTML = getInfo[2022].three.additional[j].Credit;
-                    }
-                    if (getInfo[2022].three.additional[j].Credit == 0) {
-                        deb.innerHTML = getInfo[2022].three.additional[j].Debit;
-                        cre.innerHTML = "";
-                    }
-                    tr.appendChild(date);
-                    tr.appendChild(accName);
-                    tr.appendChild(deb);
-                    tr.appendChild(cre);
-                    GJ_Entry.append(tr);
-                } else if (getInfo[2022].three.additional[j].v == 1) {
-                    // console.log(getInfo[2022].three.additional[j])
-                    let tr = document.createElement("tr");
-                    // let date = document.createElement("td");
-                    let accName = document.createElement("td");
-                    let deb = document.createElement("td");
-                    let cre = document.createElement("td");
-                    accName.innerHTML = getInfo[2022].three.additional[j].AccountName;
-                    if (getInfo[2022].three.additional[j].Debit == 0) {
-                        deb.innerHTML = "";
-                        cre.innerHTML = getInfo[2022].three.additional[j].Credit;
-                    }
-                    if (getInfo[2022].three.additional[j].Credit == 0) {
-                        deb.innerHTML = getInfo[2022].three.additional[j].Debit;
-                        cre.innerHTML = "";
-                    }
-                    tr.appendChild(accName);
-                    tr.appendChild(deb);
-                    tr.appendChild(cre);
-                    GJ_Entry.append(tr);
-                } else if (getInfo[2022].three.additional[j].v == 2) {
-                    // console.log(getInfo[2022].three.additional[j])
-                    let tr = document.createElement("tr");
-                    let desc = document.createElement("td");
-                    desc.setAttribute("colspan", "3");
-                    desc.innerHTML = "Description: " + getInfo[2022].three.additional[j].Description;
-                    tr.appendChild(desc);
-                    GJ_Entry.append(tr);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase();
+
+
+var gets = JSON.parse(sessionStorage.getItem("user"));
+var getInfoDB = [];
+function getFromFireBase() {
+    const dbRef = ref(db);
+    get(child(dbRef, `organization/${gets.Username}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            snapshot.forEach(c => {
+                if (c.val().three != undefined) {
+                    getInfoDB.push(c.val().three.additional)
+                    //    console.log(getInfo)
                 }
-            }
-            // console.log(`j = ${j}`);
-            index += j - 1;
-            // console.log(`index=${index}`)
+            })
+        } else {
+            console.log("Not Found!");
+            return;
         }
-    }
+    }).catch((error) => {
+        console.error(error);
+    });
 }
+
+
+
+getFromFireBase()
+
+
+
+// console.log(getInfo)
+var getInfo;
+setTimeout(() => {
+    getInfo = getInfoDB[0];
+    var GJ_Entry = document.getElementById("AJ_Entry");
+    var j = 0;
+
+    for (let index = 0; index < getInfo.length; index++) {
+        // console.log(`j start = ${j}`)
+        for (j = index; j < index + getInfo.length; j++) {
+            if (getInfo[j].v == 0) {
+                // console.log(getInfo[j]);
+                let tr = document.createElement("tr");
+                let date = document.createElement("td");
+                let accName = document.createElement("td");
+                let deb = document.createElement("td");
+                let cre = document.createElement("td");
+                date.innerHTML = getInfo[j].date;
+                date.setAttribute("rowspan", "3");
+                accName.innerHTML = getInfo[j].AccountName;
+                if (getInfo[j].Debit == 0) {
+                    deb.innerHTML = "";
+                    cre.innerHTML = getInfo[j].Credit;
+                }
+                if (getInfo[j].Credit == 0) {
+                    deb.innerHTML = getInfo[j].Debit;
+                    cre.innerHTML = "";
+                }
+                tr.appendChild(date);
+                tr.appendChild(accName);
+                tr.appendChild(deb);
+                tr.appendChild(cre);
+                GJ_Entry.append(tr);
+            } else if (getInfo[j].v == 1) {
+                // console.log(getInfo[j])
+                let tr = document.createElement("tr");
+                // let date = document.createElement("td");
+                let accName = document.createElement("td");
+                let deb = document.createElement("td");
+                let cre = document.createElement("td");
+                accName.innerHTML = getInfo[j].AccountName;
+                if (getInfo[j].Debit == 0) {
+                    deb.innerHTML = "";
+                    cre.innerHTML = getInfo[j].Credit;
+                }
+                if (getInfo[j].Credit == 0) {
+                    deb.innerHTML = getInfo[j].Debit;
+                    cre.innerHTML = "";
+                }
+                tr.appendChild(accName);
+                tr.appendChild(deb);
+                tr.appendChild(cre);
+                GJ_Entry.append(tr);
+            } else if (getInfo[j].v == 2) {
+                // console.log(getInfo[j])
+                let tr = document.createElement("tr");
+                let desc = document.createElement("td");
+                desc.setAttribute("colspan", "3");
+                desc.innerHTML = "Description: " + getInfo[j].Description;
+                tr.appendChild(desc);
+                GJ_Entry.append(tr);
+            }
+        }
+        // console.log(`j = ${j}`);
+        index += j - 1;
+        // console.log(`index=${index}`)
+    }
+}, 2500);

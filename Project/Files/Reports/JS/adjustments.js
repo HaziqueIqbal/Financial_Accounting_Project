@@ -41,17 +41,88 @@ var additionalDescriptions = [];
 var all_Enteries = [];
 var getTrialBalance = [];
 
-var getInfo = JSON.parse(sessionStorage.getItem("user"));
-if (getInfo[2022].two != undefined) {
-    if (getInfo[2022].three != undefined) {
-        getTrialBalance = getInfo[2022].three.AdjTB;
-        all_Enteries = getInfo[2022].three.additional;
-        additionalEnteries = getInfo[2022].three.AdjTB;
-    } else {
-        getTrialBalance = getInfo[2022].two.sortTB;
-        additionalEnteries = getInfo[2022].two.sortTB;
-    }
+
+
+var gets = JSON.parse(sessionStorage.getItem("user"));
+if (gets == null) {
+    window.location.replace("Invalid/Invalid.html");
 }
+var getInfoDB = [];
+var getInfoDB1 = [];
+var getIndoDB2 = []
+function getFromFireBase() {
+    const dbRef = ref(db);
+    get(child(dbRef, `organization/${gets.Username}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            snapshot.forEach(c => {
+                if (c.val().three != undefined) {
+                    getInfoDB1.push(c.val().three.AdjTB);
+                    getIndoDB2.push(c.val().three.additional);
+                }
+                else if (c.val().two != undefined) {
+                    getInfoDB.push(c.val().two.sortTB)
+                }
+
+            })
+        } else {
+            console.log("Not Found!");
+            return;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+
+
+getFromFireBase()
+
+var one;
+var two;
+var three;
+
+
+setTimeout(() => {
+    one = getInfoDB1[0];
+    two = getIndoDB2[0];
+    three = getInfoDB[0];
+    if (one.length == 0 && two.length == 0) {
+        getTrialBalance = three;
+        additionalEnteries = three;
+    } else {
+        getTrialBalance = one;
+        all_Enteries = two;
+        additionalEnteries = one;
+    }
+    console.log(getTrialBalance)
+}, 2500);
+
+const today = new Date();
+const yyyy = today.getFullYear();
+
+var dateG = "";
+
+var getFY = JSON.parse(sessionStorage.getItem("user"));
+if (getFY.Financial == "three months") {
+    dateG = `31/December/${yyyy}`;
+} else if (getFY.Financial == "six month") {
+    dateG = `30/June/${yyyy}`;
+} else {
+    dateG = `31/March/${yyyy}`;
+}
+
+
+// var getInfo = JSON.parse(sessionStorage.getItem("user"));
+// if (getInfo[2022].two != undefined) {
+//     if (getInfo[2022].three != undefined) {
+//         getTrialBalance = getInfo[2022].three.AdjTB;
+//         all_Enteries = getInfo[2022].three.additional;
+//         additionalEnteries = getInfo[2022].three.AdjTB;
+//     } else {
+//         getTrialBalance = getInfo[2022].two.sortTB;
+//         additionalEnteries = getInfo[2022].two.sortTB;
+//     }
+// }
 
 
 eventSumbit.addEventListener("click", function () {
@@ -124,7 +195,7 @@ function AddAccount(account, debit_val, credit_val, type, val) {
     let cre = document.createElement("td");
 
     if (val == 1) {
-        date.innerHTML = "31/December/2022";
+        date.innerHTML = dateG;
         date.setAttribute("rowspan", "3");
         accName.innerHTML = accountName;
         if (debit == 0) {

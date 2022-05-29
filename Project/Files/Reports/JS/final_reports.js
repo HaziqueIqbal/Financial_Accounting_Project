@@ -1,4 +1,49 @@
-var getItems = JSON.parse(sessionStorage.getItem("user"));
+// var getInfo = JSON.parse(sessionStorage.getItem("user"));
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-app.js";
+import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-database.js";
+const firebaseConfig = {
+    apiKey: "AIzaSyBs34yvugpJjNktqOXqP5h2KhbRsW8oaBY",
+    authDomain: "cap-accounts-handler.firebaseapp.com",
+    databaseURL: "https://cap-accounts-handler-default-rtdb.firebaseio.com",
+    projectId: "cap-accounts-handler",
+    storageBucket: "cap-accounts-handler.appspot.com",
+    messagingSenderId: "498900144284",
+    appId: "1:498900144284:web:6e0a5088e21938deb6dd59"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase();
+
+
+var gets = JSON.parse(sessionStorage.getItem("user"));
+if (gets == null) {
+    window.location.replace("Invalid/Invalid.html");    
+}
+var getInfoDB = [];
+function getFromFireBase() {
+    const dbRef = ref(db);
+    get(child(dbRef, `organization/${gets.Username}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            snapshot.forEach(c => {
+                if (c.val().three != undefined) {
+                    getInfoDB.push(c.val().three.AdjTB)
+                    //    console.log(getInfo)
+                }
+            })
+        } else {
+            console.log("Not Found!");
+            return;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+
+getFromFireBase()
+
 
 var final_trial_balance = [];
 var final_sort_trial_balance = [];
@@ -11,13 +56,23 @@ var all_expense = [];
 
 var ledger = document.getElementById("ledger");
 
+var getItems;
+setTimeout(() => {
+    getItems = getInfoDB[0];
+
+    generate_T_Accounts();
+}, 2500);
+
+
+
+
 function generate_T_Accounts() {
-    for (let index = 0; index < getItems[2022].three.AdjTB.length; index++) {
+    for (let index = 0; index < getItems.length; index++) {
         let container = document.createElement("div");
         container.setAttribute("class", "container");
         let p = document.createElement("p");
         p.setAttribute("class", "text");
-        p.innerHTML = getItems[2022].three.AdjTB[index].AccountName;
+        p.innerHTML = getItems[index].AccountName;
         p.style.textTransform = "capitalize";
         let table = document.createElement("table");
         table.setAttribute("class", "cen");
@@ -32,8 +87,8 @@ function generate_T_Accounts() {
         let tr_1 = document.createElement("tr");
         let td_1 = document.createElement("td");
         let td_2 = document.createElement("td");
-        td_1.innerHTML = getItems[2022].three.AdjTB[index].Debit;
-        td_2.innerHTML = getItems[2022].three.AdjTB[index].Credit;
+        td_1.innerHTML = getItems[index].Debit;
+        td_2.innerHTML = getItems[index].Credit;
         tr_1.appendChild(td_1);
         tr_1.appendChild(td_2);
 
@@ -48,15 +103,15 @@ function generate_T_Accounts() {
 }
 
 function calculateTrailBalance(getInfo) {
-    for (let index = 0; index < getItems[2022].three.AdjTB.length; index++) {
+    for (let index = 0; index < getItems.length; index++) {
         // console.log(getInfo[index]);
-        let debit = getItems[2022].three.AdjTB[index].Debit;
-        let credit = getItems[2022].three.AdjTB[index].Credit;
+        let debit = getItems[index].Debit;
+        let credit = getItems[index].Credit;
         let total = debit - credit;
         if (total > 0) {
-            final_trial_balance.push({ "AccountName": getItems[2022].three.AdjTB[index].AccountName, "Debit": total, "Credit": 0, "typeOfAccount": getItems[2022].three.AdjTB[index].typeOfAccount });
+            final_trial_balance.push({ "AccountName": getItems[index].AccountName, "Debit": total, "Credit": 0, "typeOfAccount": getItems[index].typeOfAccount });
         } else {
-            final_trial_balance.push({ "AccountName": getItems[2022].three.AdjTB[index].AccountName, "Debit": 0, "Credit": Math.abs(total), "typeOfAccount": getItems[2022].three.AdjTB[index].typeOfAccount });
+            final_trial_balance.push({ "AccountName": getItems[index].AccountName, "Debit": 0, "Credit": Math.abs(total), "typeOfAccount": getItems[index].typeOfAccount });
         }
     }
     sortTrialBalance();
@@ -358,7 +413,7 @@ function final_balance_sheet() {
 var SignOut = document.getElementById("SignOut");
 SignOut.addEventListener("click", function () {
     window.location.replace("../../index.html");
-    sessionStorage.clear();
+    sessionStorage.removeItem("user");
 });
 
 window.onload = function () {
@@ -375,4 +430,3 @@ window.onload = function () {
 };
 
 
-generate_T_Accounts();

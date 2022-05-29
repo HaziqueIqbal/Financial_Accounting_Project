@@ -15,7 +15,33 @@ const app = initializeApp(firebaseConfig);
 
 const db = getDatabase();
 
-var getItems = JSON.parse(sessionStorage.getItem("Accounts"));
+// var getItems = JSON.parse(sessionStorage.getItem("Accounts"));
+
+var gets = JSON.parse(sessionStorage.getItem("user"));
+var getInfoDB = []
+function getFromFireBase() {
+    const dbRef = ref(db);
+    get(child(dbRef, `organization/${gets.Username}`)).then((snapshot) => {
+        if (snapshot.exists()) {
+            snapshot.forEach(c => {
+                if (c.val().one != undefined) {
+                    getInfoDB.push(c.val().one.TAccounts)
+
+                }
+            })
+        } else {
+            console.log("Not Found!");
+            return;
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+
+
+
+
 
 var trial_balance = [];
 var sort_trial_balance = [];
@@ -25,6 +51,38 @@ var TB_Entry = document.getElementById("TB_Entry");
 var ledger = document.getElementById("ledger");
 
 var adjustment = document.getElementById("adjustment");
+
+if (gets != null) {
+    getFromFireBase()
+    var getItems;
+    // console.log(getItems)
+
+    setTimeout(() => {
+        getItems = getInfoDB[0];
+        // console.log(getItems)
+        generate_T_Accounts();
+    }, 2000)
+
+
+    var SignOut = document.getElementById("SignOut");
+    SignOut.addEventListener("click", function () {
+        window.location.replace("../../index.html");
+        sessionStorage.removeItem("user");
+    });
+
+
+    adjustment.addEventListener("click", function () {
+        let getUser = JSON.parse(sessionStorage.getItem("user"));
+        saveToFirebase(getUser);
+        // sessionStorage.setItem("Trial Balance", JSON.stringify(sort_trial_balance));
+        setTimeout(() => {
+            callPage();
+        }, 3000);
+
+    });
+}else{
+    window.location.replace("Invalid/Invalid.html");
+}
 
 function generate_T_Accounts() {
     for (let index = 0; index < getItems.length; index++) {
@@ -62,6 +120,7 @@ function generate_T_Accounts() {
     calculateTrailBalance(getItems);
 }
 
+
 function calculateTrailBalance(getInfo) {
     for (let index = 0; index < getInfo.length; index++) {
         // console.log(getInfo[index]);
@@ -76,6 +135,7 @@ function calculateTrailBalance(getInfo) {
     }
     sortTrialBalance();
 }
+
 
 function sortTrialBalance() {
     for (let index = 0; index < trial_balance.length; index++) {
@@ -105,6 +165,7 @@ function sortTrialBalance() {
     }
     generateTrialBalance();
 }
+
 
 function generateTrialBalance() {
     let total_debit = 0;
@@ -151,6 +212,11 @@ function generateTrialBalance() {
     }
 }
 
+
+function callPage() {
+    window.location.href = "adjustment.html";
+}
+
 function saveToFirebase(getUser) {
     const dbRef = ref(db);
     get(child(dbRef, `organization/${getUser.Username}`)).then((snapshot) => {
@@ -171,24 +237,3 @@ function saveToFirebase(getUser) {
         console.error(error);
     });
 }
-
-var SignOut = document.getElementById("SignOut");
-SignOut.addEventListener("click",function(){
-    window.location.replace("../../index.html");
-});
-
-
-adjustment.addEventListener("click", function () {
-    let getUser = JSON.parse(sessionStorage.getItem("user"));
-    saveToFirebase(getUser);
-    sessionStorage.setItem("Trial Balance", JSON.stringify(sort_trial_balance));
-    setTimeout(() => {
-        callPage();
-    }, 3000);
-
-});
-
-function callPage() {
-    window.location.href = "adjustment.html";
-}
-generate_T_Accounts();
