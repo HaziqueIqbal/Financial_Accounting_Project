@@ -1,0 +1,15 @@
+#TB_Entry th{
+     border: 1px solid gray;
+     width: 100%;
+}
+#TB{
+    width: 70%;
+    margin: 0 auto;
+}
+#TB td{
+    border: 1px solid gray !important;
+    text-align: left !important;
+}
+.b{
+    font-weight: bold;
+}

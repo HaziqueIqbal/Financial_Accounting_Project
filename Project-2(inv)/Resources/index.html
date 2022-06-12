@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+
+<body>
+    <div class="fluid">
+        <form>
+            <div class="container">
+                <h1>Login</h1>
+                <p>Please enter your valid credentials.</p>
+                <hr>
+
+                <label for="userName"><b>Username</b></label>
+                <input type="text" placeholder="Enter username" name="username" id="userName" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+
+                <label for="login_as"><b>Login As</b></label>
+                <select name="la" id="la" class="sel" required>
+                    <option value="organization">Organization</option>
+                    <option value="inventory_management">Inventory Management</option>
+                </select>
+
+                <hr>
+                <p id="x" hidden></p>
+                <p>By creating an account you agree to our <a href="JavaScript:void(0)">Terms & Privacy</a>.</p>
+
+            </div>
+        </form>
+        <button id="login" class="registerbtn">Login</button>
+
+        <div class="container signin">
+            <p>Are you registered? Create an account <a href="Register.html">Sign up</a>.</p>
+        </div>
+    </div>
+    <script type="module" src="JS/login.js"></script>
+</body>
+
+</html>

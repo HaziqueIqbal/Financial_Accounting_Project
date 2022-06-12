@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Inventory</title>
+    <link rel="stylesheet" href="CSS/dashboard.css">
+    <link rel="stylesheet" href="CSS/reports.css">
+    <link rel="stylesheet" href="CSS/table.css">
+</head>
+
+<body>
+    <div class="main_heading">
+        <h1 id="getTitle"></h1>
+    </div>
+    <div class="content">
+        <p>UserName: <span id="un"></span></p>
+        <p>Email: <span id="email"></span></p>
+        <p>Address: <span id="addr"></span></p>
+        <p>Financial Year End: <span id="fye"></span></p>
+    </div>
+    <div class="box">
+        <div class="cen">
+            <h1>PURCHASES</h1>
+        </div>
+        <div class="cen">
+            <button id="purchase_e" class="edit-1">Purchase Event</button>
+            <button id="purchase_r" class="edit-1">Purchase Return</button>
+            <button id="purchase_a" class="edit-1">Purchase Discount</button>
+            <button id="purchase_cost" class="edit-1">Fright Charges</button>
+        </div>
+    </div>
+    <div class="box">
+        <div class="cen b">
+            <h1>SALES</h1>
+        </div>
+        <div class="cen">
+            <button id="sales_e" class="edit-1">Sales Event</button>
+            <button id="sales_r" class="edit-1">Sales Return</button>
+            <button id="sales_a" class="edit-1">Sales Discount</button>
+            <button id="sales_cost" class="edit-1">Destination Term Agreement</button>
+        </div>
+    </div>
+
+    <div class="cen">
+        <div id="dis" style="display: none;">
+            <h1>Summary</h1>
+            <p style="color: red; margin: 10px 0;">Currently no summary here!</p>
+        </div>
+        <div id="dis2" style="display: none;">
+            <div id="ledger">
+                <p class="text c">Note: Final values are not calculated. It is calculated in Trial Balance.</p>
+            </div>
+            <div class="main_heading">
+                <h2>"Trial Balance"</h2>
+            </div>
+            <div id="TB">
+                <table id="TB_Entry">
+                    <tr>
+                        <th>Accounts</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <button id="SignOut">SignOut</button>
+    <script type="module" src="JS/inventory_dashboard.js"></script>
+</body>
+
+</html>

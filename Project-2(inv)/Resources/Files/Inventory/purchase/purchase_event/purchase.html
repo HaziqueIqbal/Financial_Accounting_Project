@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Event</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+
+<body>
+    <div class="main_heading">
+        <h1>"Purchase Events"</h1>
+    </div>
+    <div class="form_style">
+        <form>
+            <h2 class="heading">Entry block</h2>
+            <input type="text" class="textbox_style d1" name="accountName" id="entry1"
+                placeholder="Enter Inventory Name">
+            <input type="number" class="textbox_style d2"  min="0" name="units" id="entry2"
+                placeholder="Enter number of units">
+            <input type="text" class="textbox_style d3" name="perUnitPrice" id="entry3"
+                placeholder="Enter per units price">
+            <select name="typeOfPayment" class="textbox_style d3" id="entry4">
+                <option value="0">Choose type of payment</option>
+                <option value="liability">Accounts Payable</option>
+            </select>
+            <br>
+            <input type="text" class="textbox_style mr" name="Description" id="entryDescription"
+                placeholder="Enter Information About Event">
+            <br>
+            <input type="button" class="mr-button" id="entrySubmit" value="Enter">
+        </form>
+        <p class="mr-t" id="co" hidden></p>
+    </div>
+    <div class="main_heading">
+        <h1>"General Journal"</h1>
+    </div>
+    <div id="GJ">
+        <table id="GJ_Entry">
+            <tr>
+                <th>Date</th>
+                <th>Accounts</th>
+                <th>Debit</th>
+                <th>Credit</th>
+            </tr>
+
+        </table>
+    </div>
+    <button id="SignOut">SignOut</button>
+    <div class="final_button">
+        <p class="mr-t" id="co1" hidden></p>
+        <input type="button" class="mr-button cen" id="reports" value="Add to Database">
+    </div>
+    <script type="module" src="purchase.js"></script>
+    <script type="module" src="getInfo.js"></script>
+</body>
+
+</html>

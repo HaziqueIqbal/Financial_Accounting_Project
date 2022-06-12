@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: black;
+}
+.container {
+  width: 75%;
+  margin: 30px auto;
+  text-align: center;
+}
+.footer {
+  width: 75%;
+  text-align: center;
+  margin: 30px auto;
+}
+.main {
+  margin-top: 20%;
+  font-weight: bold;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 60px;
+  color: white;
+}
+
+.para {
+  color: white;
+  font-size: 30px;
+  font-family: "Courier New", Courier, monospace;
+  padding: 10px;
+}
+.buttons {
+  padding: 15px;
+}
+.but {
+  background-color: white;
+  width: 30%;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+a {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.para1 {
+  color: white;
+  font-size: 15px;
+  font-family: "Courier New", Courier, monospace;
+  padding: 3px;
+}
